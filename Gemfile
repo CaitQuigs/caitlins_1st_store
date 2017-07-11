@@ -24,6 +24,7 @@ gem 'bootstrap-sass'
 gem 'font-awesome-rails'
 gem 'devise'
 gem 'carrierwave'
+gem 'mini_magick'
 gem 'cancancan'
 gem 'pry-rails'
 gem 'better_errors', group: :development
