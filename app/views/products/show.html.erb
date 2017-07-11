@@ -26,13 +26,17 @@
 </p>
 
 <p>
+  <%= image_tag @product.image.url %>
+</p>
+
+<p>
   <strong>Rating:</strong>
   <%= @product.rating %>
 </p>
 
 <p>
   <strong>Category:</strong>
-  <%= @product.category_id %>
+  <%= @product.category.name %>
 </p>
 
 <%= link_to 'Edit', edit_product_path(@product) %> |
