@@ -1,0 +1,47 @@
+<div class="row">
+  <% @products.each do |product| %>
+    <div class="col-md-4">
+      <div class="well center-it">
+        <% if product.image.url.nil? == false %>
+          <p><%= image_tag product.image.url, class: "storefront-pics" %></p>
+        <% end %>
+        <h3><%= link_to product.name, product %></h3>
+        <p><%= number_to_currency product.price %></p>
+        <p>
+            <!-- Button trigger modal -->
+            <a href="#" data-toggle="modal" data-target="#myModal_<%= product.id %>">
+                <span class="glyphicon glyphicon-plus"></span> Quick Info
+            </a>
+        </p>
+      </div>
+    </div>
+    <!-- Modal -->
+        <div class="modal fade" id="myModal_<%= product.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><%= link_to product.name, product %></h4>
+              </div>
+            <div class="modal-body">
+                <% if product.image.url.nil? == false %>
+                    <p><%= image_tag product.image.url, class: "storefront-pics" %></p>
+                <% end %>
+                <h2><%= number_to_currency product.price %></h2>
+                <p>made by <%= product.brand %></p>
+                <p><%= product.description %></p>
+            </div>
+            <div class="modal-footer">
+              <p>
+                <%= form_tag add_to_cart_path do %>
+                  <%= hidden_field_tag :product_id, product.id %>
+                  <%= number_field_tag :quantity, nil, placeholder: "How many?" %>
+                  <%= submit_tag "Add to Cart", class: "btn btn-danger" %>
+                <% end %>
+              </p>
+            </div>
+          </div>
+        </div>
+    </div>
+  <% end %>
+</div>
