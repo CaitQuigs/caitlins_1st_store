@@ -13,6 +13,8 @@ class ApplicationController < ActionController::Base
     @brands = Product.pluck(:brand).sort.uniq
   end
   
+
+  
   protected
   
   def configure_permitted_parameters
