@@ -4,33 +4,24 @@ class CartController < ApplicationController
   
   # This check array stuff to make sure that we just update the quantity for the same item, doesn't work.
   def add_to_cart
-    # check = false
-    
-    # check_array = LineItem.all
-    # check_array.each do |item|
-    #   if item.product_id == params[:product_id].to_i
-    #     check = true
-    #     item.quantity += params[:quantity].to_i
-    #     item.line_item_total = (item.quantity * line_item.product.price)
-    #   end
-    # end
-    # check_array.save
-    
-    # line_item = LineItem.where(product_id: params[:product_id].to_i)
-    #   if line_item.empty?
-    #     line_item = LineItem.create(product_id: params[:product_id].to_i, quantity: params[:quantity].to_i)
-    #     line_item.update(line_item_total: (line_item.quantity * line_item.product.price))
-    #     redirect_back(fallback_location: root_path)
-    #   else
-    #     line_item.update(quantity: line_item.quantity + (params[:quantity].to_i), line_item_total: (line_item.quantity * line_item.product.price))
-    #   end
-      
-
-    # if check == false
-      line_item = LineItem.create(product_id: params[:product_id], quantity: params[:quantity])
-      line_item.update(line_item_total: (line_item.quantity * line_item.product.price))
+    product = Product.find(params[:product_id])
+    if (product.quantity - params[:quantity].to_i) < 0
+      flash[:notice] = "There are only #{product.quantity} #{product.name} in stock. Please order fewer items."
       redirect_back(fallback_location: root_path)
+    else
+      line_item = LineItem.where(product_id: params[:product_id].to_i).first
+      if line_item.blank?
+        line_item = LineItem.create(product_id: params[:product_id].to_i, quantity: params[:quantity].to_i)
+        line_item.update(line_item_total: line_item.quantity * line_item.product.price)
+      else
+        new_quantity = line_item.quantity + params[:quantity].to_i
+        line_item.update(quantity: new_quantity)
+        line_item.update(line_item_total: line_item.quantity * line_item.product.price)
+      end
+      redirect_back(fallback_location: root_path)
+    end
   end
+
 
   def view_order
     @line_items = LineItem.all
