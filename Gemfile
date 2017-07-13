@@ -26,7 +26,6 @@ gem 'devise'
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'cancancan'
-gem 'pry-rails'
 gem 'better_errors', group: :development
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
